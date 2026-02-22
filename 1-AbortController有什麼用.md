@@ -2,7 +2,8 @@
 
 想像一種情況，用戶瘋狂點擊button發出一堆API requests，結果舊的請求比新的還晚回來，頁面顯示的竟然是過期資料（圖一，最終顯示的是Response 1 ❌）。
 
-![thread1.jpg](attachment:350050a1-707f-4c38-ba73-b027eed52710:thread1.jpg)
+![1.jpg](./assets/1/1.jpg)
+
 
 AbortController 是 JavaScript 原生提供的一個類別，專門用來**取消異步操作**，最常見的就是取消 fetch 請求。把它想像成一個「遙控器」，可以隨時對正在進行的請求喊停。
 
@@ -14,7 +15,7 @@ controller.abort();
 
 AbortController 確保「只有最後一次請求的結果會被使用」，並abort前一次正在進行的異步請求（圖二，最終顯示的是Response 3 ✅）。
 
-![thread1-2.jpg](attachment:8330271e-c32b-49e2-b6c4-1bd21d3c0b02:thread1-2.jpg)
+![2.jpg](./assets/1/2.jpg)
 
 不只是fetch，例如addEventListener、fs.readFile、axios、ky等一些nodejs原生class和很多libraries都支持AbortController的使用。
 
