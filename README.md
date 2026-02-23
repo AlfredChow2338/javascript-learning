@@ -4,4 +4,5 @@
 
 ## Articles
 
-- [JS的AbortController class有什麼用？](./1-AbortController有什麼用.md)
+- [AbortController Class有什麼用？](./1-AbortController有什麼用.md)
+- [NextJS旳Cache機制](./2-NextJS旳Cache機制.md)
