@@ -1,4 +1,4 @@
-## **Static 與 Dynamic**
+## Static 與 Dynamic
 
 Next.js 的頁面分兩種：**Static**（靜態）和 **Dynamic**（動態）。
 
