@@ -7,3 +7,4 @@
 - [AbortController Class有什麼用？](./1-AbortController有什麼用.md)
 - [NextJS旳Cache機制](./2-NextJS旳Cache機制.md)
 - [React.cache()基本原理](./3-React.cache()基本原理.md)
+- [NextJS的Hydration是什麼？](./4-NextJS的Hydration是什麼.md)
