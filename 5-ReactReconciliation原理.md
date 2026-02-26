@@ -136,7 +136,7 @@ React 建立 key 映射表：
 1. `<div>` vs `<div>`
   * 類型相同，保留，比較屬性（無變化）
 2. 比較子節點列表：
-  * 第一個子節點：`<Counter count={1} /> vs <Counter count={2} />`
+  * 第一個子節點：`<Counter count={1} />` vs `<Counter count={2} />`
     * 類型相同（都是 Counter），保留實例
     * 更新 props: count: 1 → 2
     * 調用 Counter 的 render，比較 render 結果
