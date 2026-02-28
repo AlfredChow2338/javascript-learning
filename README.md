@@ -15,9 +15,9 @@
 
 ## React
 
-- [1.React.cache基本原理](./react/1-React.cache基本原理.md)
-- [2.React Reconciliation原理](./react/2-ReactReconciliation原理.md)
-- [3.React Fiber原理](./react/3-ReactFiber原理.md)
+- [1.React.cache原理](./react/1-react.cache原理.md)
+- [2.Reconciliation原理](./react/2-reconciliation原理.md)
+- [3.Fiber原理](./react/3-fiber原理.md)
 
 ## Next
 
