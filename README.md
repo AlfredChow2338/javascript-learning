@@ -4,6 +4,7 @@
 
 ## Web
 - [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collection.md)
+- [2.Web Security Practices](./web/2-web-security-practices.md)
 
 ## CSS
 - [1.比較SCSS和LESS](./css/1-比較scss和less.md)
