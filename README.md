@@ -20,9 +20,9 @@
 
 ## Next
 
-- [1.Next的作用](./next/1-Next的作用.md)
-- [2.Next旳Cache機制](./2-Next旳Cache機制.md)
-- [3.Next的Hydration是什麼？](./next/3-Next的Hydration是什麼.md)
+- [1.Next框架的作用](./next/1-next框架的作用.md)
+- [2.Next旳Cache機制](./next/2-next-cache機制.md)
+- [3.Next的Hydration是什麼？](./next/3-hydration是什麼.md)
 
 ## Coding
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
