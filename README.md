@@ -27,3 +27,4 @@
 
 ## Coding
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
+- [2.Top k frequent element](./coding/2-top-k-frequent-element實現.md)
