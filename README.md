@@ -2,19 +2,17 @@
 
 我學習JavaScript的筆記，當中主要是一些我認為不常見和適合Senior JavaScript Dev的advanced concepts，有空就會更新，因為是香港人的緣故所以是繁中和英文夾雜，謝謝體諒。
 
-## Articles
+## JavaScript
 
-### JavaScript
+- [1.AbortController Class有什麼用？](./javascript/1-AbortController有什麼用.md)
 
-- [1.JS的AbortController Class有什麼用？](./javascript/1-AbortController有什麼用.md)
+## React
 
-### React
-
-- [1.React.cache()基本原理](./react/1-React.cache()基本原理.md)
+- [1.React.cache基本原理](./react/1-React.cache基本原理.md)
 - [2.React Reconciliation原理](./react/2-ReactReconciliation原理.md)
-- [3.ReactFiber原理](./react/3-ReactFiber原理.md)
+- [3.React Fiber原理](./react/3-ReactFiber原理.md)
 
-### Next
+## Next
 
 - [1.Next的作用](./next/1-Next的作用.md)
 - [2.Next旳Cache機制](./2-Next旳Cache機制.md)
