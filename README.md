@@ -11,7 +11,7 @@
 
 ## JavaScript
 
-- [1.AbortController Class有什麼用？](./javascript/1-AbortController有什麼用.md)
+- [1.AbortController Class有什麼用？](./javascript/1-abort-controller有什麼用.md)
 
 ## React
 
