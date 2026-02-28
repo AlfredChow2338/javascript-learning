@@ -3,7 +3,7 @@
 我學習JavaScript的筆記，當中主要是一些我認為不常見和適合Senior JavaScript Dev的advanced concepts，有空就會更新，因為是香港人的緣故所以是繁中和英文夾雜，謝謝體諒。
 
 ## Web
-- [1.V8 Engine的garbage collection](./web/1-V8-engine的garbage-collection.md)
+- [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collection.md)
 
 ## CSS
 - [1.比較SCSS和LESS](./css/1-比較scss和less.md)
