@@ -31,6 +31,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [2.Next旳Cache機制](./next/2-next-cache機制.md)
 - [3.Next的Hydration是什麼？](./next/3-hydration是什麼.md)
 - [4.比較App Router(Next 13+)和Page Router](./next/4-app-router-vs-page-router.md)
+- [5.Partial Prerendering原理](./next/5-partial-prerendering原理.md)
 
 ## Coding
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
