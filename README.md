@@ -14,6 +14,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 
 - [1.AbortController Class有什麼用？](./javascript/1-abort-controller有什麼用.md)
 - [2.Closure原理](./javascript/2-closure原理.md)
+- [3.Event Loop原理](./javascript/3-event-loop原理.md)
 
 ## React
 
