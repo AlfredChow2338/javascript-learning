@@ -37,3 +37,4 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 ## Coding
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
 - [2.Top k frequent element](./coding/2-top-k-frequent-element實現.md)
+- [3.Debounce實現](./coding/3-debounce實現.md)
