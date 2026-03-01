@@ -3,11 +3,14 @@
 JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
 ## Web
+
 - [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collection.md)
 - [2.Web Security Practices](./web/2-web-security-practices.md)
 - [3.High Traffic Web實現](./web/3-high-traffic-web-practices.md)
+- [4.Webpack bundling原理和配置](./web/4-webpack-bundling-原理和配置.md)
 
 ## CSS
+
 - [1.比較SCSS和LESS](./css/1-比較scss和less.md)
 
 ## JavaScript
@@ -27,6 +30,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [1.Next框架的作用](./next/1-next框架的作用.md)
 - [2.Next旳Cache機制](./next/2-next-cache機制.md)
 - [3.Next的Hydration是什麼？](./next/3-hydration是什麼.md)
+- [4.比較App Router(Next 13+)和Page Router](./next/4-app-router-vs-page-router.md)
 
 ## Coding
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
