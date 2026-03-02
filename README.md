@@ -13,6 +13,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 ## CSS
 
 - [1.比較SCSS和LESS](./css/1-比較scss和less.md)
+- [2.Grid Layout的原理和基本語法](./css/2-grid的原理和基本語法.md)
 
 ## JavaScript
 
