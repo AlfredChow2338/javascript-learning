@@ -292,6 +292,312 @@ Layer 3 (固定導航)
 合成 → 顯示在屏幕
 ```
 
+### 關鍵問題解答
+
+#### 問題一：CSS 是在 DOM 構建之前還是之後渲染的？
+
+**答案：CSS 解析與 DOM 構建是並行的，但 CSS 必須在渲染之前完成。**
+
+**詳細解釋：**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Hello</h1>
+</body>
+</html>
+```
+
+**實際執行順序：**
+
+```
+時間線：
+0ms:    開始下載 HTML
+        ↓
+50ms:   開始解析 HTML，構建 DOM
+        ↓
+100ms:  遇到 <link> 標籤，開始下載 CSS（與 DOM 構建並行）
+        ↓
+150ms:  DOM 構建完成（但等待 CSS）
+        ↓
+300ms:  CSS 下載完成
+        ↓
+350ms:  CSSOM 構建完成
+        ↓
+400ms:  DOM + CSSOM → Render Tree
+        ↓
+450ms:  Layout → Paint → Composite
+        ↓
+500ms:  首次渲染
+```
+
+**關鍵點：**
+
+1. **DOM 和 CSSOM 構建是並行的**
+   - HTML 解析器遇到 `<link>` 時，會並行下載 CSS
+   - DOM 構建不等待 CSS 下載完成
+   - 但 DOM 構建完成後，會等待 CSSOM 完成
+
+2. **CSS 阻塞渲染，但不阻塞 DOM 構建**
+   ```html
+   <!-- DOM 會繼續構建 -->
+   <link rel="stylesheet" href="styles.css">
+   <body>
+     <h1>Hello</h1> <!-- 這部分 DOM 會先構建完成 -->
+   </body>
+   ```
+
+3. **渲染必須等待 CSSOM**
+   - 瀏覽器必須有完整的 CSSOM 才能構建 Render Tree
+   - 沒有 CSSOM，無法計算樣式，無法渲染
+
+**視覺化：**
+
+```
+DOM 構建：    ████████████ (完成)
+CSS 下載：    ████████████████████ (較慢)
+CSSOM 構建：              ████
+渲染：                    ░░░░ (等待 CSSOM)
+                          ████ (CSSOM 完成後立即渲染)
+```
+
+#### 問題二：HTML 是增量渲染的，CSS 是否也是？
+
+**答案：CSS 不是增量解析的，必須完整解析才能使用。**
+
+**HTML 增量解析：**
+
+```html
+<!-- 瀏覽器可以邊下載邊解析 -->
+<html>
+<head>...</head>  <!-- 解析這部分 -->
+<body>
+  <h1>Hello</h1>  <!-- 繼續解析這部分 -->
+  <p>World</p>    <!-- 繼續解析這部分 -->
+</body>
+</html>
+```
+
+**原因：**
+- HTML 是流式（streaming）的
+- 瀏覽器可以逐步構建 DOM Tree
+- 部分 HTML 可以立即顯示（如果 CSS 已準備好）
+
+**CSS 必須完整解析：**
+
+```css
+/* CSS 不能增量解析 */
+h1 {
+  color: red;
+}
+
+/* 後面的規則可能覆蓋前面的 */
+h1 {
+  color: blue; /* 最終是 blue，不是 red */
+}
+
+/* 如果只解析一半，會得到錯誤的樣式 */
+```
+
+**原因：**
+1. **層疊性（Cascading）**
+   - 後面的規則可能覆蓋前面的
+   - 必須知道所有規則才能確定最終樣式
+
+2. **選擇器優先級**
+   ```css
+   .header h1 { color: red; }    /* 優先級：0,1,1 */
+   h1 { color: blue; }            /* 優先級：0,0,1 */
+   /* 必須比較所有選擇器才能確定 */
+   ```
+
+3. **繼承和計算**
+   ```css
+   body { font-size: 16px; }
+   h1 { font-size: 2em; } /* 必須知道 body 的 font-size 才能計算 */
+   ```
+
+**實際影響：**
+
+```html
+<!-- 場景：CSS 文件很大（100KB）-->
+<link rel="stylesheet" href="large-styles.css">
+
+<!-- HTML 已經解析完成，DOM 已構建 -->
+<body>
+  <h1>Hello</h1> <!-- DOM 已存在，但無法渲染 -->
+</body>
+
+<!-- 必須等待整個 CSS 文件下載和解析完成 -->
+<!-- 即使 HTML 已經準備好，也要等待 CSS -->
+```
+
+**優化策略：**
+
+```html
+<!-- ✅ 分離關鍵 CSS 和非關鍵 CSS -->
+<!-- 內聯關鍵 CSS（立即可用）-->
+<style>
+  body { font-family: Arial; }
+  h1 { color: #333; }
+</style>
+
+<!-- 非關鍵 CSS 延遲載入 -->
+<link rel="preload" href="non-critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+```
+
+#### 問題三：async 和 defer 腳本，哪個會在 HTML 完全渲染後才解釋？
+
+**答案：defer 腳本會在 HTML 完全解析後執行，async 腳本在下載完成後立即執行（可能早於 HTML 完全解析）。**
+
+**詳細對比：**
+
+**async 腳本：**
+
+```html
+<script async src="app.js"></script>
+```
+
+**執行時機：**
+- 下載不阻塞 HTML 解析
+- **下載完成後立即執行**（不等待 HTML 解析完成）
+- 執行時會阻塞渲染
+
+**時間線：**
+
+```
+0ms:    開始下載 HTML
+        ↓
+50ms:   遇到 <script async>
+        ↓
+100ms:  開始下載 script（不阻塞 HTML 解析）
+        ↓
+200ms:  HTML 解析繼續進行
+        ↓
+300ms:  script 下載完成
+        ↓
+350ms:  **立即執行 script**（HTML 可能還沒解析完）
+        ↓
+400ms:  HTML 解析完成
+```
+
+**defer 腳本：**
+
+```html
+<script defer src="app.js"></script>
+```
+
+**執行時機：**
+- 下載不阻塞 HTML 解析
+- **等待 HTML 完全解析完成後才執行**
+- 按順序執行（多個 defer 腳本按出現順序執行）
+
+**時間線：**
+
+```
+0ms:    開始下載 HTML
+        ↓
+50ms:   遇到 <script defer>
+        ↓
+100ms:  開始下載 script（不阻塞 HTML 解析）
+        ↓
+200ms:  HTML 解析繼續進行
+        ↓
+300ms:  script 下載完成（但等待 HTML 解析）
+        ↓
+400ms:  HTML 解析完成
+        ↓
+450ms:  **執行 script**（HTML 已完全解析）
+```
+
+**實際範例：**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="analytics.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <h1>Hello</h1>
+  <p>World</p>
+  <!-- 更多內容... -->
+</body>
+</html>
+```
+
+**執行順序：**
+
+```
+1. HTML 開始解析
+2. 遇到 async script，開始下載（不阻塞）
+3. 遇到 defer script，開始下載（不阻塞）
+4. HTML 繼續解析
+5. async script 下載完成 → **立即執行**（HTML 可能還沒解析完）
+6. HTML 解析完成
+7. defer script 下載完成 → **執行**（HTML 已完全解析）
+```
+
+**關鍵差異：**
+
+| 特性 | async | defer |
+|------|-------|-------|
+| **下載** | 不阻塞 HTML 解析 | 不阻塞 HTML 解析 |
+| **執行時機** | 下載完成後立即 | HTML 解析完成後 |
+| **執行順序** | 不保證順序 | 保證順序（按出現順序） |
+| **DOM 可用性** | 可能不可用 | 保證可用 |
+| **適用場景** | 獨立腳本（如 analytics） | 依賴 DOM 的腳本 |
+
+**使用建議：**
+
+```html
+<!-- ✅ async：獨立腳本，不依賴 DOM -->
+<script async src="analytics.js"></script>
+<script async src="ads.js"></script>
+
+<!-- ✅ defer：依賴 DOM 的腳本 -->
+<script defer src="app.js"></script>
+<script defer src="components.js"></script>
+<!-- 保證按順序執行，DOM 已準備好 -->
+```
+
+**實際測試：**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="async.js"></script>
+  <script defer src="defer.js"></script>
+</head>
+<body>
+  <h1>Test</h1>
+  <script>
+    console.log('Inline script');
+  </script>
+</body>
+</html>
+```
+
+```javascript
+// async.js
+console.log('Async script executed');
+console.log('DOM ready?', document.readyState); // 可能是 'loading'
+
+// defer.js
+console.log('Defer script executed');
+console.log('DOM ready?', document.readyState); // 保證是 'complete'
+```
+
+**總結：**
+- **async**：下載完成後立即執行，不等待 HTML 解析完成
+- **defer**：等待 HTML 完全解析完成後才執行，保證 DOM 可用
+
 ### 阻塞資源
 
 #### 渲染阻塞資源（Render-blocking）
