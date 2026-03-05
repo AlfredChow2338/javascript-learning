@@ -1,6 +1,7 @@
 function debounce(func, delay) {
   let timeoutId
   return function (...args) {
+    console.log({timeoutId})
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => {
       func(...args)
