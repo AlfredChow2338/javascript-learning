@@ -32,6 +32,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [1.React.cache原理](./react/1-react.cache原理.md)
 - [2.Reconciliation原理](./react/2-reconciliation原理.md)
 - [3.Fiber原理](./react/3-fiber原理.md)
+- [4.如何optimize大型列表的渲染性能](./react/4-如何optimize大型列表的渲染性能.md)
 
 ## Testing
 - [1.大型web-applications的測試方案](./testing/1-large-scale-web-app-testing方案.md)
