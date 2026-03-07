@@ -47,3 +47,4 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 
 ## Web 3
 - [1.Blockchain入門和Web 3生態](./web3/1-blockchain-basics.md)
+- [2.以太坊Gas機制解釋](./web3/2-解釋以太坊Gas機制.md)
