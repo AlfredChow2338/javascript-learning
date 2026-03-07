@@ -6,7 +6,8 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
 - [2.Top k frequent element](./coding/2-top-k-frequent-element實現.md)
 - [3.Debounce實現](./coding/3-debounce實現.md)
-- [5.LRU Cache實現](./coding/4-lru-cache實現.md)
+- [4.LRU Cache實現](./coding/4-lru-cache實現.md)
+- [5.Promise函數實現](./coding/5-promise函數實現.md)
 
 ## CSS
 
