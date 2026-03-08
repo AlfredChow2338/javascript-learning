@@ -61,3 +61,4 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [3.比較Layer 1和Layer 2鏈](./web3/3-比較layer1-layer2鏈.md)
 - [4.Solana租金機制解釋](./web3/4-solana-租金機制解釋.md)
 - [5.甚麼是ERC20 token](./web3/5-甚麼是erc20-token.md)
+- [6.Web3 applications的security vulnerabilities](./web3/6-web3-application的security-vulnerabilities.md)
