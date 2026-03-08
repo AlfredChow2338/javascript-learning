@@ -9,6 +9,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [4.LRU Cache實現](./coding/4-lru-cache實現.md)
 - [5.Promise函數實現](./coding/5-promise函數實現.md)
 - [6.Deep Clone實現](./coding/6-deep-clone實現.md)
+- [7.Throttle實現](./coding/7-throttle實現.md)
 
 ## CSS
 
