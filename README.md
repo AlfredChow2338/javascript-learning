@@ -54,6 +54,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [5.HTTP Cache底層原理](./web/5-http-cache原理.md)
 - [6.解釋Critcal Rendering Path](./web/6-解釋critical-rendering-path.md)
 - [7.Signoz實現與原理](./web/7-signoz實現和原理.md)
+- [8.Websocket原理](./web/8-websocket原理.md)
 
 ## Web 3
 - [1.Blockchain入門和Web 3生態](./web3/1-blockchain-basics.md)
