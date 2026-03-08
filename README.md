@@ -42,9 +42,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 
 ## System Design
 - [1.如何設計高併發frontend application](./system-design/1-如何設計高併發frontend-application.md)
-
-## Testing
-- [1.大型web-applications的測試方案](./testing/1-large-scale-web-app-testing方案.md)
+- [2.大型web-applications的測試方案](./system-design/2-large-scale-web-app-testing方案.md)
 
 ## Web
 
