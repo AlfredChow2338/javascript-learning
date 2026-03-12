@@ -314,6 +314,329 @@ console.log('6');
 // 5. 再執行 Macrotask：4
 ```
 
+### 6.5 為什麼要區分 Microtask 和 Macrotask Queue？
+
+這是 Event Loop 設計中的核心問題。JavaScript 為什麼不只用一個任務隊列，而要區分 Microtask 和 Macrotask？
+
+#### 6.5.1 設計目標：優先級和時機控制
+
+**核心原因：需要不同的執行時機和優先級**
+
+JavaScript 需要處理兩類不同性質的異步任務：
+
+1. **需要立即響應的任務**（Microtask）
+   - Promise 回調：需要盡快處理，保證異步操作的連續性
+   - DOM 變更觀察：需要在渲染前完成，確保 DOM 狀態一致
+   - 狀態更新：需要在用戶看到 UI 前完成
+
+2. **可以延遲的任務**（Macrotask）
+   - 定時器：有明確的延遲需求
+   - I/O 操作：通常不緊急
+   - UI 渲染：需要等待所有同步和微任務完成
+
+#### 6.5.2 如果只有一個隊列會怎樣？
+
+**假設只有一個任務隊列：**
+
+```javascript
+// 假設所有異步任務都在同一個隊列
+console.log('1');
+
+setTimeout(() => {
+  console.log('2');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3');
+});
+
+setTimeout(() => {
+  console.log('4');
+}, 0);
+
+// 如果只有一個隊列，可能的輸出：1, 2, 3, 4
+// 但這樣會有問題：
+```
+
+**問題一：Promise 響應延遲**
+
+```javascript
+// 如果 Promise 和 setTimeout 在同一個隊列
+Promise.resolve().then(() => {
+  console.log('promise 1');
+});
+
+setTimeout(() => {
+  console.log('timeout 1');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('promise 2');
+});
+
+setTimeout(() => {
+  console.log('timeout 2');
+}, 0);
+
+// 單一隊列可能的順序：promise 1, timeout 1, promise 2, timeout 2
+// 問題：Promise 鏈式調用會被 setTimeout 打斷
+// 用戶體驗：異步操作不連續，感覺「卡頓」
+```
+
+**問題二：DOM 更新時機錯誤**
+
+```javascript
+// 如果沒有 Microtask，DOM 更新可能在不正確的時機執行
+button.addEventListener('click', () => {
+  // 修改 DOM
+  div.textContent = 'Updated';
+  
+  // 如果 MutationObserver 和 setTimeout 在同一個隊列
+  // MutationObserver 可能晚於渲染執行，導致觀察不到變更
+  observer.observe(div, { childList: true });
+  
+  setTimeout(() => {
+    // 渲染可能已經發生，但 observer 還沒執行
+  }, 0);
+});
+```
+
+#### 6.5.3 區分隊列的優勢
+
+**優勢一：保證 Promise 的連續性**
+
+```javascript
+// 使用 Microtask，Promise 鏈式調用是連續的
+Promise.resolve()
+  .then(() => {
+    console.log('1');
+    return Promise.resolve();
+  })
+  .then(() => {
+    console.log('2');
+  });
+
+setTimeout(() => {
+  console.log('3');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('4');
+});
+
+// 輸出：1, 4, 2, 3
+// 解釋：
+// - Promise 回調（1, 4, 2）都在 Microtask Queue
+// - 會連續執行，不會被 setTimeout 打斷
+// - 保證異步操作的連續性和可預測性
+```
+
+**優勢二：DOM 更新的正確時機**
+
+```javascript
+// Microtask 在渲染前執行，保證 DOM 狀態一致
+const div = document.createElement('div');
+div.textContent = 'Initial';
+
+// MutationObserver 使用 Microtask
+const observer = new MutationObserver(() => {
+  console.log('DOM changed');
+});
+
+observer.observe(div, { childList: true });
+
+// 修改 DOM
+div.textContent = 'Updated';
+
+// 執行順序：
+// 1. 同步代碼執行完
+// 2. Microtask（MutationObserver）執行，觀察到變更
+// 3. 瀏覽器渲染
+// 4. Macrotask（如果有）執行
+
+// 如果沒有 Microtask，observer 可能在渲染後才執行，觀察不到變更
+```
+
+**優勢三：狀態更新的原子性**
+
+```javascript
+// React/Vue 等框架使用 Microtask 批量更新狀態
+function Component() {
+  const [count, setCount] = useState(0);
+  
+  const handleClick = () => {
+    setCount((prev) => prev + 1);  // 狀態更新 1
+    setCount((prev) => prev + 1);  // 狀態更新 2
+    setCount((prev) => prev + 1);  // 狀態更新 3
+    
+    // 如果使用 Macrotask，三個更新可能分散執行
+    // 使用 Microtask，三個更新會批量處理，只觸發一次渲染
+  };
+}
+
+// 使用 Microtask 的優勢：
+// 1. 批量更新，減少渲染次數
+// 2. 在渲染前完成所有狀態更新
+// 3. 保證 UI 的一致性
+```
+
+#### 6.5.4 執行時機的差異
+
+**Microtask 的執行時機：**
+- 在當前執行棧清空後**立即執行**
+- 在瀏覽器渲染**之前**執行
+- 保證在**同一事件循環**中完成
+
+**Macrotask 的執行時機：**
+- 在 Microtask 全部執行完後執行
+- 在瀏覽器渲染**之後**執行（可能）
+- 可能跨多個事件循環
+
+**視覺化對比：**
+
+```
+事件循環時間線：
+
+同步代碼執行
+    ↓
+Microtask Queue（全部執行）
+    ↓
+瀏覽器渲染（可能）
+    ↓
+Macrotask Queue（執行一個）
+    ↓
+Microtask Queue（全部執行）
+    ↓
+瀏覽器渲染（可能）
+    ↓
+Macrotask Queue（執行一個）
+    ↓
+...
+```
+
+#### 6.5.5 實際應用：為什麼 Promise 用 Microtask？
+
+**Promise 的設計目標：**
+1. **異步操作的連續性**：Promise 鏈式調用應該連續執行
+2. **狀態的一致性**：Promise 狀態變更應該立即生效
+3. **錯誤處理的及時性**：錯誤應該盡快傳播
+
+**如果 Promise 使用 Macrotask：**
+
+```javascript
+// 假設 Promise 使用 Macrotask
+Promise.resolve()
+  .then(() => {
+    console.log('1');
+    return Promise.resolve();
+  })
+  .then(() => {
+    console.log('2');
+  });
+
+setTimeout(() => {
+  console.log('3');
+}, 0);
+
+// 可能的輸出：3, 1, 2
+// 問題：
+// 1. Promise 鏈被 setTimeout 打斷
+// 2. 異步操作不連續，用戶體驗差
+// 3. 錯誤處理可能延遲
+```
+
+**使用 Microtask 的優勢：**
+
+```javascript
+// Promise 使用 Microtask
+Promise.resolve()
+  .then(() => {
+    console.log('1');
+    return Promise.resolve();
+  })
+  .then(() => {
+    console.log('2');
+  });
+
+setTimeout(() => {
+  console.log('3');
+}, 0);
+
+// 輸出：1, 2, 3
+// 優勢：
+// 1. Promise 鏈連續執行
+// 2. 異步操作可預測
+// 3. 錯誤處理及時
+```
+
+#### 6.5.6 性能考慮
+
+**Microtask 的優勢：**
+- **低延遲**：立即執行，響應快
+- **批量處理**：可以批量處理多個相關任務
+- **減少渲染**：在渲染前完成，減少重複渲染
+
+**Macrotask 的優勢：**
+- **不阻塞**：可以讓瀏覽器有機會渲染
+- **可控延遲**：適合定時任務
+- **資源管理**：可以控制任務的執行頻率
+
+**平衡設計：**
+
+```javascript
+// 設計原則：
+// 1. 緊急任務用 Microtask（Promise、狀態更新）
+// 2. 非緊急任務用 Macrotask（定時器、I/O）
+// 3. 保證用戶交互的響應性
+// 4. 避免阻塞渲染
+
+// 示例：React 的狀態更新
+function Component() {
+  const [state, setState] = useState(0);
+  
+  // setState 使用 Microtask，保證：
+  // 1. 多個 setState 批量處理
+  // 2. 在渲染前完成
+  // 3. 狀態更新原子性
+  const handleClick = () => {
+    setState(1);
+    setState(2);
+    setState(3);
+    // 只觸發一次渲染，最終 state = 3
+  };
+}
+```
+
+#### 6.5.7 總結：為什麼要區分？
+
+**核心原因總結：**
+
+1. **優先級需求**：不同任務有不同的緊急程度
+   - Microtask：需要立即響應（Promise、DOM 觀察）
+   - Macrotask：可以延遲（定時器、I/O）
+
+2. **執行時機**：不同任務需要在不同時機執行
+   - Microtask：渲染前執行，保證狀態一致
+   - Macrotask：渲染後執行，不阻塞渲染
+
+3. **用戶體驗**：保證交互的流暢性
+   - Microtask：保證異步操作的連續性
+   - Macrotask：給瀏覽器渲染的機會
+
+4. **性能優化**：批量處理和減少渲染
+   - Microtask：批量處理相關任務
+   - Macrotask：控制任務執行頻率
+
+5. **語義清晰**：明確任務的性質和預期行為
+   - Microtask：立即、連續、原子性
+   - Macrotask：延遲、可中斷、可調度
+
+**設計哲學：**
+- **Microtask**：用於需要「立即」處理的任務，保證連續性和一致性
+- **Macrotask**：用於可以「延遲」的任務，給系統調度的空間
+
+這種設計讓 JavaScript 能夠在單線程環境下，既保證關鍵任務的及時性，又給瀏覽器渲染和系統調度留出空間，實現了性能和用戶體驗的平衡。
+
 ### 7. 實際應用場景
 
 #### 場景一：DOM 更新
