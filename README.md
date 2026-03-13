@@ -25,6 +25,8 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [3.Event Loop原理](./javascript/3-event-loop原理.md)
 - [4.Mutation Observer原理](./javascript/4-mutation-observer原理.md)
 - [5.this的原理](./javascript/5-this的原理.md)
+- [6.React Server Component原理](./react/6-react-server-component原理.md)
+- [6.useContext原理及優化](./react/7-useContext原理及優化.md)
 
 ## Next
 
