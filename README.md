@@ -50,6 +50,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [2.大型web-applications的測試方案](./system-design/2-large-scale-web-app-testing方案.md)
 - [3.如何設計安全的用戶登入認證流程](./system-design/3-如何設計安全的用戶登入認證流程.md.md)
 - [4.Code spliting optimization實現](./system-design/4-code-spliting-optimization實現.md)
+- [5.如何deploy frontend application](./system-design/5-如何deploy-frontend-application.md)
 
 ## Web
 
