@@ -3,6 +3,7 @@
 JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
 ## Coding
+
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
 - [2.Top k frequent element](./coding/2-top-k-frequent-element實現.md)
 - [3.Debounce實現](./coding/3-debounce實現.md)
@@ -11,6 +12,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [6.Deep Clone實現](./coding/6-deep-clone實現.md)
 - [7.Throttle實現](./coding/7-throttle實現.md)
 - [8.Flatten Map實現](./coding/8-flatten-map實現.md)
+- [9.['1', '2', '3'].map(parseInt)結果](<./coding/9-['1',%20'2',%20'3'].map(parseInt).md>)
 
 ## CSS
 
@@ -48,6 +50,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [8.animation實現](./react/8-animation實現.md)
 
 ## System Design
+
 - [1.如何設計高併發frontend application](./system-design/1-如何設計高併發frontend-application.md)
 - [2.大型web-applications的測試方案](./system-design/2-large-scale-web-app-testing方案.md)
 - [3.如何設計安全的用戶登入認證流程](./system-design/3-如何設計安全的用戶登入認證流程.md.md)
@@ -69,6 +72,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [11.Web component原理](./web/11-web-component原理.md)
 
 ## Web 3
+
 - [1.Blockchain入門和Web 3生態](./web3/1-blockchain-basics.md)
 - [2.以太坊Gas機制解釋](./web3/2-以太坊Gas機制解釋.md)
 - [3.比較Layer 1和Layer 2鏈](./web3/3-比較layer1-layer2鏈.md)
