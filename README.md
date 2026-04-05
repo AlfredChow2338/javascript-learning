@@ -2,6 +2,10 @@
 
 JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
+## AI
+
+- [1.Vibe Coding工具模型比較](./ai/1-vibe-coding工具模型比較.md)
+
 ## Coding
 
 - [1.lodash.get實現](./coding/1-lodash.get實現.md)
