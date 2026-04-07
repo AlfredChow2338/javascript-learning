@@ -35,5 +35,31 @@
 
 拆解需求，按新特性逐步開發
 
-- 實現表格渲染引擎（支持千萬行數據表格渲染）
--
+- 實現表格渲染引擎（支持千萬行數據表格渲染流暢），沉澱到mono repo子包中
+- 公式引擎、WebWorker多線程架構
+- 協同實現
+  - crdt、ot協同算法，基於yjs實現
+  - 協同服務
+  - 協同層傳輸協議
+- 界面
+  - 登錄
+  - 表格渲染
+
+### Vibe Coding 工作流開發 SOP
+
+1. 規範 Spec
+2. 代碼生成
+3. 完成測試用例編寫
+4. 測試 + lint
+5. check過程
+
+MCP、skill
+
+通用工具協議來調用 Model Context Protocol
+
+- 查資料 deepwiki mcp
+- shadcn mcp
+
+zcf zero config format
+
+skill
