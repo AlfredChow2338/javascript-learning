@@ -74,6 +74,7 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [9.Web worker原理](./web/9-web-worker原理.md)
 - [10.Service worker原理](./web/10-service-worker原理.md)
 - [11.Web component原理](./web/11-web-component原理.md)
+- [12.首屏加載怎樣優化](./web/12-首屏加載怎麼優化.md)
 
 ## Web 3
 
