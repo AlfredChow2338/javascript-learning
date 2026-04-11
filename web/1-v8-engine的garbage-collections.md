@@ -57,82 +57,26 @@ V8 將內存分為兩個主要區域，每個區域有不同的管理策略：
    - 遍歷整個內存
    - 釋放未被標記的對象所佔用的內存
 
-**標記-壓縮算法（Mark-Compact Algorithm）**
-
-目的：解決內存碎片問題
-
-**過程：**
+**標記-壓縮算法（Mark-Compact Algorithm），解決內存碎片問題**
 
 1. **標記階段**：與標記-清除相同，先標記活躍對象
 2. **壓縮階段**：將存活的對象移動到內存的一端，釋放出一塊連續的空間
 
 ### 增量垃圾回收（Incremental GC）
 
-為了避免應用程序在垃圾回收期間完全暫停，V8 將老生代的垃圾回收過程分解為多個小步驟，與應用程序執行交替進行，減少回收的停頓時間（**Stop-the-World** 時間）。
+- 將 GC 工作分成小塊
+- 減少 Stop-the-World 時間
+- 提升用戶體驗
 
 ### 實際優化建議
 
 - 事件監聽沒有移除
 - 避免不必要長期引用
 - 及時釋放大對象避免長期持有
-- 使用對象也
+- 使用對象池減少 GC 壓力
 
 ### 監控和調試
 
-#### 使用 Chrome DevTools
-
-```javascript
-// 在 Chrome DevTools 中監控內存使用
-// 1. 打開 Performance 面板
-// 2. 勾選 Memory
-// 3. 開始錄製
-// 4. 執行你的代碼
-// 5. 停止錄製，查看內存使用情況
-
-// 使用 performance.memory（非標準 API，僅 Chrome）
-if (performance.memory) {
-  console.log("Used:", performance.memory.usedJSHeapSize / 1048576, "MB");
-  console.log("Total:", performance.memory.totalJSHeapSize / 1048576, "MB");
-  console.log("Limit:", performance.memory.jsHeapSizeLimit / 1048576, "MB");
-}
-```
-
-#### 強制觸發 GC（僅開發環境）
-
-```javascript
-// 在 Chrome DevTools 中：
-// 1. 打開 Memory 面板
-// 2. 點擊垃圾桶圖標手動觸發 GC
-
-// 或在 Node.js 中（需要 --expose-gc 標誌）
-if (global.gc) {
-  global.gc();
-}
-```
-
-### 總結
-
-**新生代 GC（Scavenger）：**
-
-- 快速、高效
-- 只處理短期存活的對象
-- 使用複製算法，無碎片問題
-
-**老生代 GC（Mark-Sweep / Mark-Compact）：**
-
-- 處理長期存活的對象
-- 更複雜、更耗時
-- Mark-Compact 解決碎片問題
-
-**增量 GC：**
-
-- 將 GC 工作分成小塊
-- 減少 Stop-the-World 時間
-- 提升用戶體驗
-
-**最佳實踐：**
-
-- 避免內存洩漏（及時移除事件監聽器、清理引用）
-- 避免不必要的長期引用
-- 及時釋放大對象
-- 考慮使用對象池減少 GC 壓力
+- 使用 Chrome DevTools > Performance > Memory錄製內存使用情況
+- 使用 performance.memory API （僅Chrome）
+- DevTools > Memory > 強制觸發GC
