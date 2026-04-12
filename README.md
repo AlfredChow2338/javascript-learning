@@ -50,9 +50,8 @@ JavaScript的筆記，當中主要是一些適合Senior JavaScript Dev的concept
 - [4.如何optimize大型列表的渲染性能](./react/4-如何optimize大型列表的渲染性能.md)
 - [5.比較Global State管理方案和原理](./react/6-global-state管理方法原理和比較.md)
 - [6.React Server Component(RSC)原理](./react/6-react-server-component原理.md)
-- [7.useContext原理及優化](./react/7-useContext原理及優化.md)
-- [8.animation實現](./react/8-animation實現.md)
-- [9.React Hook哲學](./react/9-react-hook哲學.md)
+- [7.animation實現](./react/8-animation實現.md)
+- [8.React Hook哲學](./react/9-react-hook哲學.md)
 
 ## System Design
 
