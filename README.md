@@ -5,6 +5,8 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 ## AI
 
 - [1.Vibe Coding工具模型比較](./ai/1-vibe-coding工具模型比較.md)
+- [2.如何解決AI生成代碼混亂](./ai/2-如何解決AI生成代碼混亂.md)
+- [3.怎樣審核驗收AI代碼](./ai/3-怎樣審核驗收AI代碼.md)
 
 ## Coding
 
