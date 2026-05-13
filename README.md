@@ -31,8 +31,6 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [3.Event Loop原理](./javascript/3-event-loop原理.md)
 - [4.Mutation Observer原理](./javascript/4-mutation-observer原理.md)
 - [5.this的原理](./javascript/5-this的原理.md)
-- [6.React Server Component原理](./react/6-react-server-component原理.md)
-- [6.useContext原理及優化](./react/7-useContext原理及優化.md)
 
 ## Next
 
@@ -48,19 +46,20 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [2.Reconciliation原理](./react/2-reconciliation原理.md)
 - [3.Fiber原理](./react/3-fiber原理.md)
 - [4.如何optimize大型列表的渲染性能](./react/4-如何optimize大型列表的渲染性能.md)
-- [5.比較Global State管理方案和原理](./react/6-global-state管理方法原理和比較.md)
+- [5.比較Global State管理方案和原理](./react/5-global-state管理方法原理和比較.md)
 - [6.React Server Component(RSC)原理](./react/6-react-server-component原理.md)
-- [7.animation實現](./react/8-animation實現.md)
-- [8.React Hook哲學](./react/9-react-hook哲學.md)
+- [7.animation實現](./react/7-animation實現.md)
+- [8.React Hook哲學](./react/8-react-hook哲學.md)
 - [9.useState為什麼不能在if裡面用](./react/9-useState為什麼不能在if裡面用.md)
 
 ## System Design
 
 - [1.如何設計高併發frontend application](./system-design/1-如何設計高併發frontend-application.md)
 - [2.大型web-applications的測試方案](./system-design/2-large-scale-web-app-testing方案.md)
-- [3.如何設計安全的用戶登入認證流程](./system-design/3-如何設計安全的用戶登入認證流程.md.md)
+- [3.如何設計安全的用戶登入認證流程](./system-design/3-如何設計安全的用戶登入認證流程.md)
 - [4.Code spliting optimization實現](./system-design/4-code-spliting-optimization實現.md)
 - [5.如何deploy frontend application](./system-design/5-如何deploy-frontend-application.md)
+- [6.Micro Frontend架構](./system-design/6-micro-frontend架構.md)
 
 ## Vue
 
@@ -68,7 +67,7 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 
 ## Web
 
-- [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collection.md)
+- [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collections.md)
 - [2.Web Security Practices](./web/2-web-security-practices.md)
 - [3.High Traffic Web實現](./web/3-high-traffic-web-practices.md)
 - [4.Webpack bundling原理和配置](./web/4-webpack-bundling-原理和配置.md)
