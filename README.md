@@ -53,6 +53,7 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [7.animation實現](./react/7-animation實現.md)
 - [8.React Hook哲學](./react/8-react-hook哲學.md)
 - [9.useState為什麼不能在if裡面用](./react/9-useState為什麼不能在if裡面用.md)
+- [10.React Virtual DOM原理](./react/10-react-virtual-dom原理.md)
 
 ## System Design
 
