@@ -7,6 +7,7 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [1.Vibe Coding工具模型比較](./ai/1-vibe-coding工具模型比較.md)
 - [2.如何解決AI生成代碼混亂](./ai/2-如何解決AI生成代碼混亂.md)
 - [3.怎樣審核驗收AI代碼](./ai/3-怎樣審核驗收AI代碼.md)
+- [4.如何用 Claude Code agentic 工作流做 AI 代碼量化驗收](./ai/4如何用%20claude-code-agentic工作流做AI代碼量化驗收.md)
 
 ## Coding
 
