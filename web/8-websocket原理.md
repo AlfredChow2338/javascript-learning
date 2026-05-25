@@ -1,201 +1,47 @@
-## WebSocket 原理
+# WebSocket 原理
 
-### 什麼是 WebSocket
+WebSocket 在 **單條 TCP** 上提供 **全雙工、持久** 的訊息通道：先走 HTTP **Upgrade（101）** 握手，之後用 **frame** 傳資料，不再每次請求帶完整 HTTP header。取捨是 **低延遲推送** ↔ **連線狀態、重連、擴展與代理配置** — 不需要雙向即時時，HTTP 或 SSE 更簡單。
 
-**WebSocket** 是一種在單個 TCP 連接上進行全雙工通信的協議，允許服務器和客戶端之間實時、雙向地傳輸數據。
+### 本質一：為什麼不用輪詢 HTTP
 
-**核心特點：**
-- **全雙工通信**：客戶端和服務器可以同時發送數據
-- **持久連接**：建立連接後保持打開狀態
-- **低延遲**：無需每次請求都建立新連接
-- **實時性**：適合實時應用（聊天、遊戲、交易等）
+- **短輪詢**：延遲高、空請求多。
+- **長輪詢**：連接佔用、超時重連複雜。
+- **WebSocket**：一次握手，**伺服器可主動 push** — 聊天、報價、協同游標適用。
+- **SSE**：單向 server→client、HTTP 友好；只需下行推送時可優先 SSE。
 
-### 為什麼需要 WebSocket
+### 本質二：握手與安全
 
-**傳統 HTTP 的問題：**
-- 單向通信：客戶端發起請求，服務器響應
-- 無狀態：每次請求都是獨立的
-- 高開銷：每次請求都需要建立連接
+- Client：`Upgrade: websocket`、`Connection: Upgrade`、`Sec-WebSocket-Key`。
+- Server：**101 Switching Protocols** + `Sec-WebSocket-Accept`（key 哈希驗證）。
+- **生產用 `wss://`**（TLS）；與頁面 **同源策略** 仍適用；反向代理要開 **websocket upgrade** 超時。
 
-**WebSocket 的優勢：**
-- 雙向通信：服務器可以主動推送數據
-- 持久連接：一次握手，持續通信
-- 低開銷：減少連接建立和 HTTP 頭部開銷
+### 本質三：連線與訊息模型
 
----
+- **Frame**：text / binary / ping / pong / close；client 發送 **mask**。
+- **API**：`new WebSocket(url)` → `onopen` / `onmessage` / `onclose` / `send()`。
+- **無內建 RPC** — 應用層自定 JSON 協議、heartbeat、**重連 + 退避**、**消息序號 / 去重**。
 
-## 一、WebSocket 協議原理
+### 本質四：與 Worker / Service Worker 的邊界
 
-### 1.1 握手過程（Handshake）
+- **Web Worker**（`web/9-web-worker原理.md`）：算力線程，**不是**長連網路協議。
+- **Service Worker**（`web/10-service-worker原理.md`）：攔 fetch、離線；**不能**替代頁內 WebSocket 客戶端，但可配合 push。
+- **協同編輯**：常 WS 傳 op + CRDT/OT；大計算仍放 Worker。
 
-**HTTP 升級請求：**
+### 何時用 / 不用
 
-```
-客戶端 → 服務器
-GET /chat HTTP/1.1
-Host: example.com
-Upgrade: websocket
-Connection: Upgrade
-Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
-Sec-WebSocket-Version: 13
-```
+**適合**：即時聊天、遊戲狀態、行情、協同、live notification。
 
-**服務器響應：**
+**不適合**：一般 CRUD REST、可 cache 的 GET、檔案下載 — 用 HTTP。
 
-```
-服務器 → 客戶端
-HTTP/1.1 101 Switching Protocols
-Upgrade: websocket
-Connection: Upgrade
-Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
-```
+### 常見陷阱
 
-**關鍵點：**
-- 使用 HTTP 101 狀態碼表示協議升級
-- `Sec-WebSocket-Key` 用於安全驗證
-- 握手完成後，連接升級為 WebSocket
+- **無 heartbeat** — 中間 NAT/代理 silent drop。
+- **無重連狀態同步** — 斷線期間消息丟失未補。
+- **把 WS 當 REST** — 無 idempotency、無版本協議易亂序。
+- **單機 broadcast 當擴展方案** — 多 instance 需 **Redis pub/sub** 等 fan-out。
 
-### 1.2 數據幀格式
+### 小結
 
-WebSocket 使用幀（Frame）傳輸數據：
-
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-------+-+-------------+-------------------------------+
-|F|R|R|R| opcode|M| Payload len |    Extended payload length    |
-|I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
-|N|V|V|V|       |S|             |   (if payload len==126/127)   |
-| |1|2|3|       |K|             |                               |
-+-+-+-+-+-------+-+-------------+-------------------------------+
-|     Extended payload length continued, if payload len == 127  |
-+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
-|                               |Masking-key, if MASK set to 1  |
-+-------------------------------+-------------------------------+
-| Masking-key (continued)       |          Payload Data         |
-+-------------------------------- - - - - - - - - - - - - - - - +
-:                     Payload Data continued ...                :
-+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
-|                     Payload Data continued ...                |
-+---------------------------------------------------------------+
-```
-
-**關鍵字段：**
-- **FIN**：標識是否為最後一幀
-- **Opcode**：操作碼（文本、二進制、關閉等）
-- **Mask**：是否掩碼（客戶端必須掩碼）
-- **Payload**：實際數據
-
----
-
-## 二、基本使用
-
-### 2.1 客戶端（JavaScript）
-
-```javascript
-// 創建 WebSocket 連接
-const ws = new WebSocket('wss://example.com/ws');
-
-// 連接打開
-ws.onopen = () => {
-  console.log('WebSocket connected');
-  ws.send('Hello Server');
-};
-
-// 接收消息
-ws.onmessage = (event) => {
-  console.log('Message:', event.data);
-};
-
-// 錯誤處理
-ws.onerror = (error) => {
-  console.error('WebSocket error:', error);
-};
-
-// 連接關閉
-ws.onclose = (event) => {
-  console.log('WebSocket closed:', event.code, event.reason);
-};
-
-// 發送消息
-ws.send('Hello');
-ws.send(JSON.stringify({ type: 'message', data: 'Hello' }));
-
-// 關閉連接
-ws.close();
-```
-
-### 2.2 服務器（Node.js）
-
-```javascript
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
-
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-
-  // 接收消息
-  ws.on('message', (message) => {
-    console.log('Received:', message);
-    
-    // 發送消息給客戶端
-    ws.send(`Echo: ${message}`);
-    
-    // 廣播給所有客戶端
-    wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
-  });
-
-  // 連接關閉
-  ws.on('close', () => {
-    console.log('Client disconnected');
-  });
-});
-```
-
----
-
-## 三、WebSocket vs HTTP
-
-### 3.1 通信模式對比
-
-**HTTP（請求-響應）：**
-```
-客戶端 → 請求 → 服務器
-客戶端 ← 響應 ← 服務器
-（每次都需要建立連接）
-```
-
-**WebSocket（持久連接）：**
-```
-客戶端 ←→ 服務器
-（一次連接，持續通信）
-```
-
-### 3.2 性能對比
-
-| 特性 | HTTP | WebSocket |
-|------|------|-----------|
-| **連接方式** | 每次請求建立新連接 | 持久連接 |
-| **通信方向** | 單向（客戶端發起） | 雙向 |
-| **開銷** | 每次都有 HTTP 頭部 | 只有數據幀 |
-| **實時性** | 需要輪詢 | 即時推送 |
-| **適用場景** | 傳統 Web 應用 | 實時應用 |
-
-### 3.3 使用場景
-
-**適合 WebSocket：**
-- 實時聊天
-- 在線遊戲
-- 股票/加密貨幣價格更新
-- 協作編輯
-- 實時通知
-
-**適合 HTTP：**
-- 傳統 CRUD 操作
-- 靜態資源獲取
-- RESTful API
-- 不需要實時性的場景
+- **問題**：HTTP 請求-響應難做低延遲雙向 push。
+- **手段**：HTTP 升級 + 持久 frame 通道 + 應用層協議與重連。
+- **結果**：即時交互；運維要管連線數、sticky、超時與安全（wss、auth）。

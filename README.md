@@ -1,13 +1,12 @@
-# JavaScript Learning 
+# JavaScript Learning
 
 JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
 ## AI
 
-- [1.Vibe Coding工具模型比較](./ai/1-vibe-coding工具模型比較.md)
-- [2.如何解決AI生成代碼混亂](./ai/2-如何解決AI生成代碼混亂.md)
-- [3.怎樣審核驗收AI代碼](./ai/3-怎樣審核驗收AI代碼.md)
-- [4.如何用 Claude Code agentic 工作流做 AI 代碼量化驗收](./ai/4如何用%20claude-code-agentic工作流做AI代碼量化驗收.md)
+- [1.如何解決AI生成代碼混亂](./ai/1-如何解決AI生成代碼混亂.md)
+- [2.怎樣審核驗收AI代碼](./ai/2-怎樣審核驗收AI代碼.md)
+- [3.如何用 Claude Code agentic 工作流做 AI 代碼量化驗收](./ai/3-如何用claude-code-agentic工作流做AI代碼量化驗收.md)
 
 ## Coding
 
@@ -43,27 +42,35 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [4.比較App Router(Next 13+)和Page Router](./next/4-app-router-vs-page-router.md)
 - [5.Partial Prerendering原理](./next/5-partial-prerendering原理.md)
 
+## Node
+
+- [1.V8 Engine的Garbage Collections](./node/1-v8-engine的garbage-collections.md)
+
+## Performance (性能)
+
+- [1.LCP首屏加載怎麼優化](./performance/1-LCP首屏加載怎麼優化.md)
+- [2.如何優化Code Spliting](./performance/2-如何優化code-spliting.md)
+- [3.如何優化大型列表的渲染性能](./performance/3-如何優化大型列表的渲染性能.md)
+
 ## React
 
-- [1.React.cache原理](./react/1-react.cache原理.md)
+- [1.React Hook哲學](./react/1-react-hook哲學.md)
 - [2.Reconciliation原理](./react/2-reconciliation原理.md)
 - [3.Fiber原理](./react/3-fiber原理.md)
-- [4.如何optimize大型列表的渲染性能](./react/4-如何optimize大型列表的渲染性能.md)
-- [5.比較Global State管理方案和原理](./react/5-global-state管理方法原理和比較.md)
+- [4.useState為什麼不能在if裡面用](./react/4-useState為什麼不能在if裡面用.md)
+- [5.React Virtual DOM原理](./react/5-react-virtual-dom原理.md)
 - [6.React Server Component(RSC)原理](./react/6-react-server-component原理.md)
 - [7.animation實現](./react/7-animation實現.md)
-- [8.React Hook哲學](./react/8-react-hook哲學.md)
-- [9.useState為什麼不能在if裡面用](./react/9-useState為什麼不能在if裡面用.md)
-- [10.React Virtual DOM原理](./react/10-react-virtual-dom原理.md)
+- [8.React.cache原理](./react/8-react.cache原理.md)
+- [9.比較Global State管理方案和原理](./react/9-global-state管理方法原理和比較.md)
 
 ## System Design
 
 - [1.如何設計高併發frontend application](./system-design/1-如何設計高併發frontend-application.md)
 - [2.大型web-applications的測試方案](./system-design/2-large-scale-web-app-testing方案.md)
 - [3.如何設計安全的用戶登入認證流程](./system-design/3-如何設計安全的用戶登入認證流程.md)
-- [4.Code spliting optimization實現](./system-design/4-code-spliting-optimization實現.md)
+- [4.Micro Frontend架構](./system-design/4-micro-frontend架構.md)
 - [5.如何deploy frontend application](./system-design/5-如何deploy-frontend-application.md)
-- [6.Micro Frontend架構](./system-design/6-micro-frontend架構.md)
 
 ## Vue
 
@@ -71,7 +78,7 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 
 ## Web
 
-- [1.V8 Engine的garbage collection](./web/1-v8-engine的garbage-collections.md)
+- [1.如何設計離線可用Web App](./web/1-如何設計離線可用web-app.md)
 - [2.Web Security Practices](./web/2-web-security-practices.md)
 - [3.High Traffic Web實現](./web/3-high-traffic-web-practices.md)
 - [4.Webpack bundling原理和配置](./web/4-webpack-bundling-原理和配置.md)
@@ -82,8 +89,6 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [9.Web worker原理](./web/9-web-worker原理.md)
 - [10.Service worker原理](./web/10-service-worker原理.md)
 - [11.Web component原理](./web/11-web-component原理.md)
-- [12.首屏加載怎樣優化](./web/12-首屏加載怎麼優化.md)
-- [13.如何設計離線可用Web App](./web/13-如何設計離線可用web-app.md)
 
 ## Web 3
 
