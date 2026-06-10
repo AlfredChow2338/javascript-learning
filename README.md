@@ -8,6 +8,8 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 - [2.怎樣審核驗收AI代碼](./ai/2-怎樣審核驗收AI代碼.md)
 - [3.如何用 Claude Code agentic 工作流做 AI 代碼量化驗收](./ai/3-如何用claude-code-agentic工作流做AI代碼量化驗收.md)
 - [4.熱門常用skills](./ai/4-熱門常用skills.md)
+- [5.Agent為什麼在關鍵時刻失智](./ai/5-Agent為什麼在關鍵時刻失智.md)
+- [6.RAG檢索增強生成原理與進階技法](./ai/6-RAG檢索增強生成原理與進階技法.md)
 
 ## Coding
 
