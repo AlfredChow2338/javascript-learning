@@ -1,5 +1,5 @@
-# JavaScript Learning 
- 
+# JavaScript Learning
+
 JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
 ## AI
@@ -48,6 +48,10 @@ JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為�
 ## Node
 
 - [1.V8 Engine的Garbage Collections](./node/1-v8-engine的garbage-collections.md)
+
+## NPM
+
+- [1.CI裡npx為什麼會ENOTEMPTY](./npm/1-CI裡npx為什麼會ENOTEMPTY.md)
 
 ## Performance (性能)
 
