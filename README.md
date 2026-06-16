@@ -1,5 +1,5 @@
 # JavaScript Learning
-
+ 
 JavaScript的筆記，當中主要是一些適合Senior Dev的concepts，因為我是香港人的緣故，所以是繁中和英文夾雜。
 
 ## AI
