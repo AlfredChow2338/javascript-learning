@@ -1,11 +1,11 @@
 # CI 裡 npx 為什麼會 ENOTEMPTY
 
-Frontend CI 在 prebuild 用 `npx @bms/bigtix-tms-cli@latest load admin ...` 拉翻譯時，間歇性報 `ENOTEMPTY: directory not empty, rmdir`。這不是翻譯邏輯 bug，而是 **同一 Jenkins agent 上多 job 共用 npx 快取目錄，並發安裝時互相踩檔**。
+Frontend CI 在 prebuild 用 `npx prettier@latest --check .` 做 format check 時，間歇性報 `ENOTEMPTY: directory not empty, rmdir`。這不是 prettier 或專案路徑寫錯，而是 **同一 Jenkins agent 上多 job 共用 npx 快取目錄，並發安裝時互相踩檔**。
 
 ### 本質一：npx 不是「臨時跑一下」，而是「寫共享快取」
 
 - npx 流程：resolve package spec → 裝進 `~/.npm/_npx/<hash>/node_modules/` → 從那裡執行 CLI → 下次 run 可能清掉或重建部分 tree。
-- `<hash>` 由 package spec 決定（例如 `@bms/bigtix-tms-cli@latest`），**同一 spec 永遠指向同一資料夾**。
+- `<hash>` 由 package spec 決定（例如 `prettier@latest`），**同一 spec 永遠指向同一資料夾**。
 - 快取不在專案 `node_modules`，而在 agent 全域 `~/.npm/_npx/` — 本機開發通常只有一個 process，問題不明顯；CI 多 build 同 user 同路徑才暴露。
 
 ### 本質二：race 怎麼發生
@@ -18,16 +18,16 @@ Frontend CI 在 prebuild 用 `npx @bms/bigtix-tms-cli@latest load admin ...` 拉
 ### 本質三：錯在哪一層
 
 - **表象**：`npm error syscall rmdir`、`exit code 217`、路徑在 `_npx/.../readable-stream/...`。
-- **根因**：共享 mutable cache + 並發 install/cleanup，不是 TMS CLI 或 locale 路徑寫錯。
+- **根因**：共享 mutable cache + 並發 install/cleanup，不是 prettier 本身或 `--check` 參數寫錯。
 - **教訓**：CI 裡把 `npx @scope/pkg@latest` 當「無狀態 one-liner」是錯的 — 它有 **跨 job 的 side effect**。
 
 ### 解法取捨
 
 **Fix 1：devDependency + 本地 binary（推薦）**
 
-- 把 `@bms/bigtix-tms-cli` 加進 devDependency；script 改跑 `tms-load load admin ...`，不再每次 `npx`。
+- 把 `prettier` 加進 devDependency；script 改跑 `prettier --check .`，不再每次 `npx`。
 - **為什麼更好**：`pnpm install` 裝一次即可；無共享 `_npx` 競爭；版本由 lockfile 管，不靠 `@latest`；build 更快、少打 registry。
-- **代價**：要改 repo（加 dep + 改 script）；CLI init / 文件可預設生成這種 script。
+- **代價**：要改 repo（加 dep + 改 script）；腳手架 / 文件可預設生成這種 script。
 
 **Fix 2：每 build 隔離 npm cache**
 
