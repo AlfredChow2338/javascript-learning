@@ -35,12 +35,12 @@ Frontend CI 在 prebuild 用 `npx prettier@latest --check .` 做 format check �
 - **為什麼有效**：各 job 的 `_npx` 路徑不同，race 機率大降。
 - **代價**：仍用 npx + `@latest`，每 build 可能重拉；只 **緩解症狀**，沒從架構上拿掉 npx 的 mutable 行為；改動最小（一個 env var）。
 
-| | Fix 1 devDep | Fix 2 隔離 cache |
-|---|---|---|
-| 可靠性 | 高 — 不再依賴 npx | 中 — 仍用 npx |
-| 速度 | 快 — install 時裝一次 | 慢 — 可能每 build 重 fetch |
-| 改動面 | dep + script | 一行 env |
-| 根因 | 移除共享 _npx | 避開碰撞 |
+|        | Fix 1 devDep          | Fix 2 隔離 cache           |
+| ------ | --------------------- | -------------------------- |
+| 可靠性 | 高 — 不再依賴 npx     | 中 — 仍用 npx              |
+| 速度   | 快 — install 時裝一次 | 慢 — 可能每 build 重 fetch |
+| 改動面 | dep + script          | 一行 env                   |
+| 根因   | 移除共享 \_npx        | 避開碰撞                   |
 
 ### 小結
 
